@@ -12,6 +12,5 @@ Fuente: ( https://mexico.unir.net/noticias/ciencias-sociales/desigualdad-social/
 
 El objetivo de mi proyecto es hacer que las necesidades y problemáticas presentes en una colonia puedan ser más cuantificables mediante el uso de números y datos. De esta manera, se busca desarrollar un programa que permita analizar diferentes características de una colonia y asignarles un nivel de prioridad, con el propósito de obtener una representación más clara de sus necesidades y facilitar la identificación de aquellas que requieren mayor atención.
 
-```text
 1ljjjjjjjjjjjj
      5.    hhgggff
