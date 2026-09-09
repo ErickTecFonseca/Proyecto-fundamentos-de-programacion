@@ -18,12 +18,12 @@ El objetivo de mi proyecto es hacer que las necesidades y problemáticas present
 
 Entrada
 
-Nombre de la colonia.
-Número de habitantes.
-Número de problemas de infraestructura.
-Gravedad de los problemas de infraestructura (1 al 10).
-Porcentaje de iluminación.
-Porcentaje de áreas verdes.
+Nombre de la colonia. String.
+Número de habitantes. Numero entero.
+Número de problemas de infraestructura. Numero entero.
+Gravedad de los problemas de infraestructura (1 al 10). Numero entero.
+Porcentaje de iluminación. Numero entero.
+Porcentaje de áreas verdes. Numero entero.
 
 Proceso
 
@@ -39,10 +39,10 @@ Proceso
 
 Salida
 
-Nombre de la colonia.
-Puntuación de infraestructura.
-Puntuación de iluminación.
-Puntuación de áreas verdes.
-Puntuación de habitantes.
-Índice de prioridad de la colonia.
+Nombre de la colonia. String
+Puntuación de infraestructura. Numero entero.
+Puntuación de iluminación. Numero entero.
+Puntuación de áreas verdes. Numero entero.
+Puntuación de habitantes. Numero entero.
+Índice de prioridad de la colonia. Numero entero.
 
