@@ -1,94 +1,49 @@
 # El usuario ingresa las diferentes colonias y sus caracteristicas, el programa nos dara un resultado
 # de la prioridad que tiene cada colonia para recibir recursos publicos.
-def pedir_datos_colonia():
-    """Solicita al usuario los datos de una colonia y los regresa."""
-    nombre_de_la_colonia = input("ingrese el nombre de la colonia: ")
-    numero_de_habitantes = int(input("ingrese el numero de habitantes: "))
-    numero_de_problemas_infraestructura = int(input("ingrese el numero de problemas de infraestructura: "))
-    gravedad_infraestructura = int(input("ingrese la gravedad de los problemas en una escala del 1 al 10 siendo 1 poco grave y 10 muy grave: "))
-    porcentaje_iluminacion = float(input("ingrese el porcentaje que cree que tiene de iluminacion en la colonia: "))
-    porcentaje_areas_verdes = float(input("ingrese el porcentaje que cree que tiene de areas verdes en la colonia: "))
-
-    return {
-        "nombre": nombre_de_la_colonia,
-        "habitantes": numero_de_habitantes,
-        "numero_problemas_infra": numero_de_problemas_infraestructura,
-        "gravedad_infra": gravedad_infraestructura,
-        "porcentaje_iluminacion": porcentaje_iluminacion,
-        "porcentaje_areas_verdes": porcentaje_areas_verdes,
-    }
+# Calcula la prioridad de una colonia para recibir recursos publicos.
 
 
-def calcular_puntuacion_infraestructura(numero_de_problemas, gravedad):
-    """Peso 40%. Mas problemas y mayor gravedad = mayor puntuacion."""
-    return (numero_de_problemas * gravedad) * 0.4
+def calcular_puntuacion(problemas, gravedad, iluminacion, areas_verdes,
+                        habitantes):
+    """Regresa la puntuacion total (0 a 100) de la colonia."""
+    puntos_infra = problemas * gravedad
+    if puntos_infra > 100:
+        puntos_infra = 100
 
+    puntos_habitantes = habitantes / 50000 * 100
+    if puntos_habitantes > 100:
+        puntos_habitantes = 100
 
-def calcular_puntuacion_iluminacion(porcentaje_iluminacion):
-    """Peso 30%. Menos iluminacion = mayor puntuacion (se invierte el porcentaje)."""
-    return (100 - porcentaje_iluminacion) * 0.3
-
-
-def calcular_puntuacion_areas_verdes(porcentaje_areas_verdes):
-    """Peso 20%. Menos areas verdes = mayor puntuacion (se invierte el porcentaje)."""
-    return (100 - porcentaje_areas_verdes) * 0.2
-
-
-def calcular_puntuacion_habitantes(numero_de_habitantes, habitantes_referencia=50000):
-    """
-    Peso 10%. Mas habitantes afectados = mayor puntuacion.
-    Se normaliza contra un numero de referencia (ajustable) para obtener un porcentaje 0-100,
-    y se limita a 100 por si la colonia supera ese numero de referencia.
-    """
-    porcentaje_habitantes = min((numero_de_habitantes / habitantes_referencia) * 100, 100)
-    return porcentaje_habitantes * 0.1
-
-
-def calcular_prioridad_total(puntuacion_infra, puntuacion_iluminacion, puntuacion_areas_verdes, puntuacion_habitantes):
-    """Suma las cuatro puntuaciones ponderadas."""
-    return puntuacion_infra + puntuacion_iluminacion + puntuacion_areas_verdes + puntuacion_habitantes
-
-
-def clasificar_prioridad(puntuacion_total):
-    """Clasifica la puntuacion final en una categoria de prioridad."""
-    if puntuacion_total >= 70:
-        return "Alta"
-    elif puntuacion_total >= 40:
-        return "Media"
-    else:
-        return "Baja"
-
-
-def mostrar_resultado(nombre_colonia, puntuacion_infra, puntuacion_iluminacion, puntuacion_areas_verdes, puntuacion_habitantes, puntuacion_total):
-    """Imprime el desglose y el resultado final de la colonia."""
-    print(f"\n--- Resultado para la colonia: {nombre_colonia} ---")
-    print(f"Puntuacion de infraestructura: {puntuacion_infra:.2f}")
-    print(f"Puntuacion de iluminacion: {puntuacion_iluminacion:.2f}")
-    print(f"Puntuacion de areas verdes: {puntuacion_areas_verdes:.2f}")
-    print(f"Puntuacion de habitantes: {puntuacion_habitantes:.2f}")
-    print(f"Puntuacion total de prioridad: {puntuacion_total:.2f}")
-    print(f"Nivel de prioridad: {clasificar_prioridad(puntuacion_total)}")
+    return (puntos_infra * 0.4
+            + (100 - iluminacion) * 0.3
+            + (100 - areas_verdes) * 0.2
+            + puntos_habitantes * 0.1)
 
 
 def main():
-    datos = pedir_datos_colonia()
+    nombre = input("Nombre de la colonia: ")
+    habitantes = int(input("Numero de habitantes: "))
+    problemas = int(input("Numero de problemas de infraestructura: "))
+    gravedad = int(input("Gravedad de los problemas (1 a 10): "))
+    iluminacion = float(input("Porcentaje de iluminacion (0 a 100): "))
+    areas_verdes = float(input("Porcentaje de areas verdes (0 a 100): "))
 
-    puntuacion_infra = calcular_puntuacion_infraestructura(
-        datos["numero_problemas_infra"], datos["gravedad_infra"]
-    )
-    puntuacion_iluminacion = calcular_puntuacion_iluminacion(datos["porcentaje_iluminacion"])
-    puntuacion_areas_verdes = calcular_puntuacion_areas_verdes(datos["porcentaje_areas_verdes"])
-    puntuacion_habitantes = calcular_puntuacion_habitantes(datos["habitantes"])
+    if habitantes <= 0 or problemas < 0:
+        print("Habitantes o problemas invalidos.")
+    elif gravedad < 1 or gravedad > 10:
+        print("La gravedad debe estar entre 1 y 10.")
+    elif iluminacion < 0 or iluminacion > 100:
+        print("La iluminacion debe estar entre 0 y 100.")
+    elif areas_verdes < 0 or areas_verdes > 100:
+        print("Las areas verdes deben estar entre 0 y 100.")
+    else:
+        total = calcular_puntuacion(problemas, gravedad, iluminacion,
+                                    areas_verdes, habitantes)
+        print(f"Puntuacion de {nombre}: {total:.2f}")
 
-    puntuacion_total = calcular_prioridad_total(
-        puntuacion_infra, puntuacion_iluminacion, puntuacion_areas_verdes, puntuacion_habitantes
-    )
-
-    mostrar_resultado(
-        datos["nombre"], puntuacion_infra, puntuacion_iluminacion,
-        puntuacion_areas_verdes, puntuacion_habitantes, puntuacion_total
-    )
-
-
-if __name__ == "__main__":
-    main()
+        if total >= 70:
+            print("Prioridad: Alta")
+        elif total >= 40:
+            print("Prioridad: Media")
+        else:
+            print("Prioridad: Baja")
