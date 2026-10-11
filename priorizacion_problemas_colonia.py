@@ -1,12 +1,19 @@
-# El usuario ingresa las diferentes colonias y sus caracteristicas, el programa nos dara un resultado
-# de la prioridad que tiene cada colonia para recibir recursos publicos.
-# Calcula la prioridad de una colonia para recibir recursos publicos.
+# Calcula la prioridad de varias colonias para recibir recursos publicos.
 
 
-def calcular_puntuacion(problemas, gravedad, iluminacion, areas_verdes,
-                        habitantes):
-    """Regresa la puntuacion total (0 a 100) de la colonia."""
-    puntos_infra = problemas * gravedad
+def pedir_numero(mensaje, minimo, maximo, tipo=float):
+    while True:
+        try:
+            valor = tipo(input(mensaje))
+            if minimo <= valor <= maximo:
+                return valor
+            print(f"  Debe estar entre {minimo} y {maximo}.")
+        except ValueError:
+            print("  Escribe un numero valido.")
+
+
+def calcular_puntuacion(gravedades, iluminacion, areas_verdes, habitantes):
+    puntos_infra = sum(gravedades)
     if puntos_infra > 100:
         puntos_infra = 100
 
@@ -21,29 +28,39 @@ def calcular_puntuacion(problemas, gravedad, iluminacion, areas_verdes,
 
 
 def main():
-    nombre = input("Nombre de la colonia: ")
-    habitantes = int(input("Numero de habitantes: "))
-    problemas = int(input("Numero de problemas de infraestructura: "))
-    gravedad = int(input("Gravedad de los problemas (1 a 10): "))
-    iluminacion = float(input("Porcentaje de iluminacion (0 a 100): "))
-    areas_verdes = float(input("Porcentaje de areas verdes (0 a 100): "))
+    colonias = []
+    otra = "s"
 
-    if habitantes <= 0 or problemas < 0:
-        print("Habitantes o problemas invalidos.")
-    elif gravedad < 1 or gravedad > 10:
-        print("La gravedad debe estar entre 1 y 10.")
-    elif iluminacion < 0 or iluminacion > 100:
-        print("La iluminacion debe estar entre 0 y 100.")
-    elif areas_verdes < 0 or areas_verdes > 100:
-        print("Las areas verdes deben estar entre 0 y 100.")
-    else:
-        total = calcular_puntuacion(problemas, gravedad, iluminacion,
-                                    areas_verdes, habitantes)
-        print(f"Puntuacion de {nombre}: {total:.2f}")
+    while otra == "s":
+        nombre = input("Nombre de la colonia: ")
+        habitantes = pedir_numero("Numero de habitantes: ", 1, 10_000_000, int)
+        problemas = pedir_numero(
+            "Numero de problemas de infraestructura: ", 0, 100, int)
 
-        if total >= 70:
+        gravedades = []
+        for i in range(problemas):
+            gravedades.append(pedir_numero(
+                f"Gravedad del problema {i + 1} (1 a 10): ", 1, 10, int))
+
+        iluminacion = pedir_numero("Porcentaje de iluminacion (0 a 100): ",
+                                   0, 100)
+        areas_verdes = pedir_numero("Porcentaje de areas verdes (0 a 100): ",
+                                    0, 100)
+
+        total = calcular_puntuacion(gravedades, iluminacion, areas_verdes,
+                                    habitantes)
+        colonias.append([nombre, total])
+        otra = input("Registrar otra colonia? (s/n): ").lower()
+
+    for colonia in colonias:
+        print(f"Puntuacion de {colonia[0]}: {colonia[1]:.2f}")
+        if colonia[1] >= 70:
             print("Prioridad: Alta")
-        elif total >= 40:
+        elif colonia[1] >= 40:
             print("Prioridad: Media")
         else:
             print("Prioridad: Baja")
+
+
+if __name__ == "__main__":
+    main()
