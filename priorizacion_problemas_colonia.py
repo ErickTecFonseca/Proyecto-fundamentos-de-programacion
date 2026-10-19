@@ -28,7 +28,8 @@ def calcular_puntuacion(gravedades, iluminacion, areas_verdes, habitantes):
 
 
 def main():
-    colonias = []
+    nombres = []          
+    puntuaciones = []     
     otra = "s"
 
     while otra == "s":
@@ -49,17 +50,22 @@ def main():
 
         total = calcular_puntuacion(gravedades, iluminacion, areas_verdes,
                                     habitantes)
-        colonias.append([nombre, total])
+        nombres.append(nombre)        
+        puntuaciones.append(total)     
         otra = input("Registrar otra colonia? (s/n): ").lower()
 
-    for colonia in colonias:
-        print(f"Puntuacion de {colonia[0]}: {colonia[1]:.2f}")
-        if colonia[1] >= 70:
+    for i in range(len(nombres)):     
+        print(f"Puntuacion de {nombres[i]}: {puntuaciones[i]:.2f}")
+        if puntuaciones[i] >= 70:
             print("Prioridad: Alta")
-        elif colonia[1] >= 40:
+        elif puntuaciones[i] >= 40:
             print("Prioridad: Media")
         else:
             print("Prioridad: Baja")
+
+    mayor = puntuaciones.index(max(puntuaciones))
+    print(f"\nColonia con mayor prioridad: {nombres[mayor]} "
+          f"({puntuaciones[mayor]:.2f})")
 
 
 if __name__ == "__main__":
