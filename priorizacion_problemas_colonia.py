@@ -1,6 +1,13 @@
 # Calcula la prioridad de varias colonias para recibir recursos publicos.
  
- 
+def pedir_nombre():
+    while True:
+        nombre = input("Nombre de la colonia: ").strip()
+        
+        if nombre.replace(" ", "").isalpha():
+            return nombre.title()  #Funcion super interesante que hace mayusculas las letras del inicio       
+        print("  Usa solo letras y espacios.") 
+
 def pedir_numero(mensaje, minimo, maximo, tipo=float):
     while True:
         try:
@@ -42,7 +49,7 @@ def main():
     otra = "s"
  
     while otra == "s":
-        nombre = input("Nombre de la colonia: ")
+        nombre = pedir_nombre()
         habitantes = pedir_numero("Numero de habitantes: ", 1, 10_000_000, int)
         problemas = pedir_numero(
             "Numero de problemas de infraestructura: ", 0, 100, int)
@@ -78,7 +85,9 @@ def main():
             mayor = fila
  
     print(f"\nColonia con mayor prioridad: {mayor[0]} ({mayor[1]:.2f})")
- 
+
  
 if __name__ == "__main__":
     main()
+
+
